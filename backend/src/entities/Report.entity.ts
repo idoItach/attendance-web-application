@@ -16,8 +16,8 @@ export class Report {
   @Column()
   endTime: number;
 
-  @Column({ default: ReportStatus.Pending })
-  status: ReportStatus.Pending | ReportStatus.Approved | ReportStatus.Rejected;
+  @Column({ type: 'enum', enum: ReportStatus, default: ReportStatus.Pending })
+  status: ReportStatus;
 
   @ManyToOne(() => User, (user) => user.reports)
   user: User;

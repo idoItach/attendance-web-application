@@ -19,8 +19,8 @@ export class User {
   @Column()
   lastName: string;
 
-  @Column()
-  role: UserRoles.Manager | UserRoles.Employee;
+  @Column({ type: 'enum', enum: UserRoles })
+  role: UserRoles;
 
   @ManyToOne(() => User, (user) => user.managedUsers, { nullable: true })
   manager: User;
