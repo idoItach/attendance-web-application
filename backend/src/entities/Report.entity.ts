@@ -11,10 +11,10 @@ export class Report {
   date: string;
 
   @Column()
-  startTime: string;
+  startTime: number;
 
   @Column()
-  endTime: string;
+  endTime: number;
 
   @Column({ default: ReportStatus.Pending })
   status: ReportStatus.Pending | ReportStatus.Approved | ReportStatus.Rejected;
