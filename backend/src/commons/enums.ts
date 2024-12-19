@@ -4,6 +4,7 @@ export enum UserRoles {
 }
 
 export enum ReportStatus {
+  InProgress = 'InProgress',
   Pending = 'Pending',
   Approved = 'Approved',
   Rejected = 'Rejected',

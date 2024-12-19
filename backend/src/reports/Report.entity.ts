@@ -10,13 +10,17 @@ export class Report {
   @Column()
   date: string;
 
-  @Column()
-  startTime: number;
+  @Column('timestamp')
+  startTime: Date;
 
-  @Column()
-  endTime: number;
+  @Column('timestamp', { nullable: true })
+  endTime: Date;
 
-  @Column({ type: 'enum', enum: ReportStatus, default: ReportStatus.Pending })
+  @Column({
+    type: 'enum',
+    enum: ReportStatus,
+    default: ReportStatus.InProgress,
+  })
   status: ReportStatus;
 
   @ManyToOne(() => User, (user) => user.reports)

@@ -14,6 +14,6 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsInt()
-  @Transform(({ value }) => parseInt(value, 10))
+  @Transform(({ value }) => Number(value))
   managerId?: number;
 }
