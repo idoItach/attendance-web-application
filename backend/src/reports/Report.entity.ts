@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { User } from './user.entity';
+import { User } from 'src/users/User.entity';
 import { ReportStatus } from 'src/commons/enums';
 
 @Entity()

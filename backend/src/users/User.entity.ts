@@ -5,7 +5,7 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { Report } from './report.entity';
+import { Report } from 'src/reports/Report.entity';
 import { UserRoles } from 'src/commons/enums';
 
 @Entity()
@@ -19,7 +19,7 @@ export class User {
   @Column()
   lastName: string;
 
-  @Column({ type: 'enum', enum: UserRoles })
+  @Column({ type: 'enum', enum: UserRoles, default: UserRoles.Employee })
   role: UserRoles;
 
   @ManyToOne(() => User, (user) => user.managedUsers, { nullable: true })

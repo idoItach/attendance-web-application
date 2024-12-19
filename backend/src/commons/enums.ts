@@ -1,10 +1,10 @@
 export enum UserRoles {
-  Manager,
-  Employee,
+  Manager = 'Manager',
+  Employee = 'Employee',
 }
 
 export enum ReportStatus {
-  Pending,
-  Approved,
-  Rejected,
+  Pending = 'Pending',
+  Approved = 'Approved',
+  Rejected = 'Rejected',
 }
