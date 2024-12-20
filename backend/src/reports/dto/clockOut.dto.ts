@@ -7,5 +7,5 @@ export class ClockOutDto {
 
   @IsInt()
   @Transform(({ value }) => Number(value))
-  reportId: number;
+  userId: number;
 }

@@ -9,6 +9,9 @@ export class CreateUserDto {
   @IsString()
   lastName: string;
 
+  @IsString()
+  email: string;
+
   @IsEnum(UserRoles, { message: "Role must be one of 'Manager' or 'Employee'" })
   role: UserRoles;
 

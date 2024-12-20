@@ -19,7 +19,14 @@ export class UsersService {
   findOne(userId: number): Promise<User> {
     return this.userRepository.findOne({
       where: { id: userId },
-      relations: ['manager', 'managedUsers', 'reports'],
+      relations: ['manager', 'managedUsers'],
+    });
+  }
+
+  findOneByEmail(email: string): Promise<User> {
+    return this.userRepository.findOne({
+      where: { email },
+      relations: ['manager', 'managedUsers', 'managedUsers.reports'],
     });
   }
 

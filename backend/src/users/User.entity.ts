@@ -19,6 +19,9 @@ export class User {
   @Column()
   lastName: string;
 
+  @Column()
+  email: string;
+
   @Column({ type: 'enum', enum: UserRoles, default: UserRoles.Employee })
   role: UserRoles;
 

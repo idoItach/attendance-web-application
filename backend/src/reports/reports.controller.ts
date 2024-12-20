@@ -14,9 +14,9 @@ export class ReportsController {
     return this.reportsService.createClockIn(clockInDto);
   }
 
-  @Put('/clock-out')
-  async updateClockOut(@Body() clockOutDto: ClockOutDto): Promise<Report> {
-    return this.reportsService.updateClockOut(clockOutDto);
+  @Post('/clock-out')
+  async createClockOut(@Body() clockOutDto: ClockOutDto): Promise<Report> {
+    return this.reportsService.createClockOut(clockOutDto);
   }
 
   @Put('/status')

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Report } from './Report.entity';
 import { Repository } from 'typeorm';
@@ -7,6 +11,7 @@ import { UsersService } from 'src/users/users.service';
 import { ClockOutDto } from './dto/clockOut.dto';
 import { ReportStatus } from 'src/commons/enums';
 import { UpdateStatusDto } from './dto/updateStatus.dto';
+import { User } from 'src/users/User.entity';
 
 @Injectable()
 export class ReportsService {
@@ -23,10 +28,15 @@ export class ReportsService {
   }
 
   async createClockIn(clockInDto: ClockInDto): Promise<Report> {
-    const user = await this.findOne(clockInDto.userId);
+    const user = await this.usersService.findOne(clockInDto.userId);
     if (!user) {
       throw new NotFoundException(
         `Employee with ID ${clockInDto.userId} not found`,
+      );
+    }
+    if (this.findReportInProgress(user) !== undefined) {
+      throw new BadRequestException(
+        `There is a report in progress for user with ID ${clockInDto.userId}. Please first clock-out`,
       );
     }
     const dateObject = new Date(clockInDto.startTime);
@@ -40,11 +50,18 @@ export class ReportsService {
     return this.reportsRepository.save(report);
   }
 
-  async updateClockOut(clockOutDto: ClockOutDto): Promise<Report> {
-    const report = await this.findOne(clockOutDto.reportId);
+  async createClockOut(clockOutDto: ClockOutDto): Promise<Report> {
+    const user = await this.usersService.findOne(clockOutDto.userId);
+    if (!user) {
+      throw new NotFoundException(
+        `Employee with ID ${clockOutDto.userId} not found`,
+      );
+    }
+    const report = this.findReportInProgress(user);
+    console.log(report);
     if (!report) {
       throw new NotFoundException(
-        `Report with ID ${clockOutDto.reportId} not found`,
+        `Can't find a report in progress for user with ID ${clockOutDto.userId}. Please first clock-in`,
       );
     }
     const dateObject = new Date(clockOutDto.endTime);
@@ -66,5 +83,11 @@ export class ReportsService {
       ...report,
       status: updateStatusDto.status,
     });
+  }
+
+  findReportInProgress(user: User): Report {
+    return user.reports.find(
+      (report) => report.status === ReportStatus.InProgress,
+    );
   }
 }
