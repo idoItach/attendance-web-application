@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Button } from "../utils/styledComponents";
+import { apiCallSignUpUser } from "../utils/api";
 
 const FormField = styled.div`
   display: flex;
@@ -44,7 +45,7 @@ const ButtonsContainer = styled.div`
 const managers = ["Alice Johnson", "Bob Smith", "Carol Lee"];
 const roles = ["Employee", "Manager"];
 
-function RegisterUserForm({ onClose }) {
+function SignUpUserForm({ onClose }) {
   const [newUserData, setNewUserData] = useState({
     firstName: "",
     lastName: "",
@@ -52,8 +53,7 @@ function RegisterUserForm({ onClose }) {
     role: "",
     managerId: undefined,
   });
-  const [isRegisterButtonDisabled, setIsRegisterButtonDisabled] =
-    useState(true);
+  const [isSignUpButtonDisabled, setIsSignUpButtonDisabled] = useState(true);
 
   useEffect(() => {
     const isFormValid =
@@ -61,7 +61,7 @@ function RegisterUserForm({ onClose }) {
       newUserData.lastName &&
       newUserData.email &&
       newUserData.role;
-    setIsRegisterButtonDisabled(!isFormValid);
+    setIsSignUpButtonDisabled(!isFormValid);
   }, [newUserData]);
 
   const handleChange = (e) => {
@@ -72,14 +72,18 @@ function RegisterUserForm({ onClose }) {
     }));
   };
 
-  const handleSubmit = () => {
-    console.log(newUserData);
-    alert("Register");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const body = { ...newUserData, manager: newUserData.manager?.id };
+    const user = await apiCallSignUpUser(body);
+    if (user) {
+      alert("User signed up successfully");
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <Title>Register new user</Title>
+      <Title>Sign up a new user</Title>
       <FormField>
         <label>First Name:</label>
         <Input
@@ -149,7 +153,7 @@ function RegisterUserForm({ onClose }) {
         <Button type="button" onClick={onClose}>
           Close
         </Button>
-        <Button type="submit" disabled={isRegisterButtonDisabled}>
+        <Button type="submit" disabled={isSignUpButtonDisabled}>
           Sign up
         </Button>
       </ButtonsContainer>
@@ -157,4 +161,4 @@ function RegisterUserForm({ onClose }) {
   );
 }
 
-export default RegisterUserForm;
+export default SignUpUserForm;

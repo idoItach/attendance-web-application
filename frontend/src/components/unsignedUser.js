@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Modal from "react-modal";
-import RegisterUserForm from "./registerUserForm";
+import SignUpUserForm from "./signUpUserForm";
 import { Button } from "../utils/styledComponents";
+import { apiCallSignInUser } from "../utils/api";
 
 const Text = styled.div`
   font-size: 1.5em;
@@ -24,23 +25,24 @@ Modal.setAppElement("#root");
 
 function UnsignedUser({ setUser }) {
   const [userEmail, setUserEmail] = useState("");
-  const [isRegisterFormOpen, setIsRegisterFormOpen] = useState(false);
+  const [isSignUpFormOpen, setIsSignUpFormOpen] = useState(false);
 
   const handleUserEmailChanged = (e) => {
     setUserEmail(e.target.value);
   };
 
-  const handleSignIn = () => {
-    console.log(userEmail);
+  const handleSignIn = async () => {
+    const user = await apiCallSignInUser(userEmail);
+    console.log(user);
     //TODO: setUser
   };
 
-  const handleRegister = () => {
-    setIsRegisterFormOpen(true);
+  const handleSignUpButton = () => {
+    setIsSignUpFormOpen(true);
   };
 
-  const handleCloseRegister = () => {
-    setIsRegisterFormOpen(false);
+  const handleCloseSignUpForm = () => {
+    setIsSignUpFormOpen(false);
   };
 
   return (
@@ -60,12 +62,12 @@ function UnsignedUser({ setUser }) {
         <Button onClick={handleSignIn} disabled={userEmail.length === 0}>
           Sign in
         </Button>
-        <Button onClick={handleRegister}>Register</Button>
+        <Button onClick={handleSignUpButton}>Sign up</Button>
       </SignInOutContainer>
 
       <Modal
-        isOpen={isRegisterFormOpen}
-        onRequestClose={handleCloseRegister}
+        isOpen={isSignUpFormOpen}
+        onRequestClose={handleCloseSignUpForm}
         style={{
           content: {
             top: "50%",
@@ -76,7 +78,7 @@ function UnsignedUser({ setUser }) {
           },
         }}
       >
-        <RegisterUserForm onClose={handleCloseRegister} />
+        <SignUpUserForm onClose={handleCloseSignUpForm} />
       </Modal>
     </>
   );
