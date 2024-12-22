@@ -15,9 +15,13 @@ export async function apiCallSignInUser(userEmail) {
 }
 
 export async function apiCallCreateClock(userId, time, endpoint) {
-  const body = { time, userId };
-  console.log(time);
+  const body = { userId, time };
   return apiCall(`${REPORTS_ENDPOINT}/${endpoint}`, "POST", body);
+}
+
+export async function apiCallUpdateReportStatus(reportId, status) {
+  const body = { reportId, status };
+  return apiCall(`${REPORTS_ENDPOINT}/status`, "PUT", body);
 }
 
 async function apiCall(endpoint, method, body = null) {
