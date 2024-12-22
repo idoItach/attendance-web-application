@@ -17,7 +17,6 @@ const Field = styled.div`
   text-align: left;
 `;
 function EmployeeDetails({ user }) {
-  console.log(user);
   return (
     <>
       <TitleWithPadding>Employee details</TitleWithPadding>

@@ -33,6 +33,10 @@ function ClockButtons({ user, setUser }) {
     setPopupMode();
   };
 
+  const handleSignOut = () => {
+    setUser(undefined);
+  };
+
   return (
     <>
       <ButtonsContainer>
@@ -42,6 +46,7 @@ function ClockButtons({ user, setUser }) {
         <Button disabled={!isReportInProgress} onClick={handleClockOutPopup}>
           Clock Out
         </Button>
+        <Button onClick={handleSignOut}> Sign out</Button>
       </ButtonsContainer>
       <Modal
         isOpen={popupMode}
