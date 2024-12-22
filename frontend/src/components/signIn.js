@@ -2,12 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Modal from "react-modal";
 import SignUpUserForm from "./signUpUserForm";
-import { Button } from "../utils/styledComponents";
+import { Button, Title } from "../utils/styledComponents";
 import { apiCallSignInUser } from "../utils/api";
-
-const Text = styled.div`
-  font-size: 1.5em;
-`;
 
 const UserEmailContainer = styled.div`
   display: flex;
@@ -23,7 +19,7 @@ const SignInOutContainer = styled.div`
 
 Modal.setAppElement("#root");
 
-function UnsignedUser({ setUser }) {
+function SignIn({ setUser }) {
   const [userEmail, setUserEmail] = useState("");
   const [isSignUpFormOpen, setIsSignUpFormOpen] = useState(false);
 
@@ -33,8 +29,7 @@ function UnsignedUser({ setUser }) {
 
   const handleSignIn = async () => {
     const user = await apiCallSignInUser(userEmail);
-    console.log(user);
-    //TODO: setUser
+    setUser(user);
   };
 
   const handleSignUpButton = () => {
@@ -47,7 +42,7 @@ function UnsignedUser({ setUser }) {
 
   return (
     <>
-      <Text>Please sign in in order to use this application</Text>
+      <Title>Please sign in in order to use this application</Title>
       <UserEmailContainer>
         Email:
         <input
@@ -84,4 +79,4 @@ function UnsignedUser({ setUser }) {
   );
 }
 
-export default UnsignedUser;
+export default SignIn;

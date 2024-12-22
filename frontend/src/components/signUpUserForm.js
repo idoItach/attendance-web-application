@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Button } from "../utils/styledComponents";
-import { apiCallSignUpUser } from "../utils/api";
+import { Button, Title } from "../utils/styledComponents";
+import { apiCallGetAllManagers, apiCallSignUpUser } from "../utils/api";
 
 const FormField = styled.div`
   display: flex;
@@ -10,15 +10,8 @@ const FormField = styled.div`
   gap: 5px;
 `;
 
-const Title = styled.div`
-  font-size: 1.5em;
+const TitleWithPadding = styled(Title)`
   padding-bottom: 20px;
-`;
-
-const Label = styled.label`
-  display: flex;
-  margin: 10px;
-  gap: 100px;
 `;
 
 const Input = styled.input`
@@ -42,7 +35,6 @@ const ButtonsContainer = styled.div`
   justify-content: space-between;
 `;
 
-const managers = ["Alice Johnson", "Bob Smith", "Carol Lee"];
 const roles = ["Employee", "Manager"];
 
 function SignUpUserForm({ onClose }) {
@@ -54,6 +46,15 @@ function SignUpUserForm({ onClose }) {
     managerId: undefined,
   });
   const [isSignUpButtonDisabled, setIsSignUpButtonDisabled] = useState(true);
+  const [managers, setManagers] = useState([]);
+
+  useEffect(() => {
+    const fetchManagers = async () => {
+      const response = await apiCallGetAllManagers();
+      setManagers(response);
+    };
+    fetchManagers();
+  }, []);
 
   useEffect(() => {
     const isFormValid =
@@ -83,7 +84,7 @@ function SignUpUserForm({ onClose }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Title>Sign up a new user</Title>
+      <TitleWithPadding>Sign up a new user</TitleWithPadding>
       <FormField>
         <label>First Name:</label>
         <Input
@@ -137,14 +138,14 @@ function SignUpUserForm({ onClose }) {
       <FormField>
         <label>Manager:</label>
         <Select
-          name="manager"
+          name="managerId"
           value={newUserData.manager}
           onChange={handleChange}
         >
           <option value="">Select Manager</option>
           {managers.map((manager) => (
-            <option key={manager} value={manager}>
-              {manager}
+            <option key={manager.id} value={manager.id}>
+              {`${manager.firstName} ${manager.lastName}`}
             </option>
           ))}
         </Select>

@@ -1,5 +1,10 @@
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const USERS_ENDPOINT = "users";
+const REPORTS_ENDPOINT = "reports";
+
+export async function apiCallGetAllManagers() {
+  return apiCall(`${USERS_ENDPOINT}/managers`, "GET");
+}
 
 export async function apiCallSignUpUser(body) {
   return apiCall(USERS_ENDPOINT, "POST", body);
@@ -7,6 +12,11 @@ export async function apiCallSignUpUser(body) {
 
 export async function apiCallSignInUser(userEmail) {
   return apiCall(`${USERS_ENDPOINT}/email/${userEmail}`, "GET");
+}
+
+export async function apiCallCreateClock(userId, time, endpoint) {
+  const body = { time, userId };
+  return apiCall(`${REPORTS_ENDPOINT}/${endpoint}`, "POST", body);
 }
 
 async function apiCall(endpoint, method, body = null) {
