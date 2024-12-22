@@ -28,6 +28,7 @@ export class ReportsService {
   }
 
   async createClockIn(clockInDto: ClockInDto): Promise<Report> {
+    console.log(clockInDto);
     const user = await this.usersService.findOne(clockInDto.userId);
     if (!user) {
       throw new NotFoundException(
@@ -58,7 +59,6 @@ export class ReportsService {
       );
     }
     const report = this.findReportInProgress(user);
-    console.log(report);
     if (!report) {
       throw new NotFoundException(
         `Can't find a report in progress for user with ID ${clockOutDto.userId}. Please first clock-in`,
