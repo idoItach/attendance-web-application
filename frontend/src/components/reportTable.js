@@ -46,7 +46,7 @@ const ToggleButton = styled(Button)`
   color: white;
 `;
 
-function ReportTable({ managedUsers, setUser }) {
+function ReportTable({ managedUsers }) {
   const [displayOnlyPendingReports, setDisplayOnlyPendingReports] =
     useState(true);
 
@@ -73,20 +73,11 @@ function ReportTable({ managedUsers, setUser }) {
   const updateReportStatus = async (reportId, status) => {
     const report = await apiCallUpdateReportStatus(reportId, status);
     if (report) {
-      setUser((user) => {
-        const updatedReports = user.reports;
-        const reportIndex = updatedReports.findIndex((r) => r.id === report.id);
-
-        updatedReports[reportIndex] = report;
-        return { ...user, reports: updatedReports };
-      });
-
       setAllReports((reports) =>
         reports.map((r) =>
           r.id === report.id ? { ...report, userName: r.userName } : r
         )
       );
-
       alert(`Set new status ${status} done successfully`);
     }
   };

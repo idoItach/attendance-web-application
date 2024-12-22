@@ -13,12 +13,12 @@ const ReportsContainer = styled.div`
   margin: auto;
   padding: 20px 20px;
 `;
-function SubmittedReports({ user, setUser }) {
+function SubmittedReports({ user }) {
   return (
     <Container>
       <Title>Submitted reports</Title>
       <ReportsContainer>
-        <ReportTable managedUsers={user.managedUsers} setUser={setUser} />
+        <ReportTable managedUsers={user.managedUsers} />
       </ReportsContainer>
     </Container>
   );

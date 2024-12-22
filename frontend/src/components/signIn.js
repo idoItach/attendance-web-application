@@ -46,14 +46,13 @@ function SignIn({ setUser }) {
       <UserEmailContainer>
         Email:
         <input
-          type="text"
+          type="email"
           value={userEmail}
           onChange={handleUserEmailChanged}
           placeholder="Enter email"
         />
       </UserEmailContainer>
       <SignInOutContainer>
-        {" "}
         <Button onClick={handleSignIn} disabled={userEmail.length === 0}>
           Sign in
         </Button>

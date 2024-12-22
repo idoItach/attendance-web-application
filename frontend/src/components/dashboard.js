@@ -7,9 +7,7 @@ function Dashboard({ user, setUser }) {
     <>
       <EmployeeDetails user={user} />
       <ClockButtons user={user} setUser={setUser} />
-      {user?.role === "Manager" && (
-        <SubmittedReports user={user} setUser={setUser} />
-      )}
+      {user?.role === "Manager" && <SubmittedReports user={user} />}
     </>
   );
 }
