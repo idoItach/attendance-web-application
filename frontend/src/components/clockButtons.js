@@ -11,7 +11,7 @@ const ButtonsContainer = styled.div`
 
 Modal.setAppElement("#root");
 
-function ClockButtons({ user }) {
+function ClockButtons({ user, setUser }) {
   const [isReportInProgress, setIsReportInProgress] = useState(false);
   const [popupMode, setPopupMode] = useState();
   useEffect(() => {
@@ -58,6 +58,7 @@ function ClockButtons({ user }) {
       >
         <ClockPopup
           userId={user.id}
+          setUser={setUser}
           mode={popupMode}
           onClose={handleCloseClockPopup}
         />

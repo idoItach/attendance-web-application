@@ -1,11 +1,11 @@
 import EmployeeDetails from "./employeeDetails";
 import ClockButtons from "./clockButtons";
 
-function Dashboard({ user }) {
+function Dashboard({ user, setUser }) {
   return (
     <>
       <EmployeeDetails user={user} />
-      <ClockButtons user={user} />
+      <ClockButtons user={user} setUser={setUser} />
     </>
   );
 }

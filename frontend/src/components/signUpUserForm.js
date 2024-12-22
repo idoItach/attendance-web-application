@@ -3,6 +3,10 @@ import styled from "styled-components";
 import { Button, Title } from "../utils/styledComponents";
 import { apiCallGetAllManagers, apiCallSignUpUser } from "../utils/api";
 
+const Form = styled.form`
+  width: 30vw;
+`;
+
 const FormField = styled.div`
   display: flex;
   flex-direction: column;
@@ -83,7 +87,7 @@ function SignUpUserForm({ onClose }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       <TitleWithPadding>Sign up a new user</TitleWithPadding>
       <FormField>
         <label>First Name:</label>
@@ -158,7 +162,7 @@ function SignUpUserForm({ onClose }) {
           Sign up
         </Button>
       </ButtonsContainer>
-    </form>
+    </Form>
   );
 }
 

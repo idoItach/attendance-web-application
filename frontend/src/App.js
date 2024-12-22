@@ -10,7 +10,7 @@ function App() {
       {user === undefined ? (
         <SignIn setUser={setUser} />
       ) : (
-        <Dashboard user={user} />
+        <Dashboard user={user} setUser={setUser} />
       )}
     </div>
   );

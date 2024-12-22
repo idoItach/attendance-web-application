@@ -16,6 +16,7 @@ export async function apiCallSignInUser(userEmail) {
 
 export async function apiCallCreateClock(userId, time, endpoint) {
   const body = { time, userId };
+  console.log(time);
   return apiCall(`${REPORTS_ENDPOINT}/${endpoint}`, "POST", body);
 }
 
