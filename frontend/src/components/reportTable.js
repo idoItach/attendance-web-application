@@ -3,6 +3,11 @@ import styled from "styled-components";
 import { Button } from "../utils/styledComponents";
 import { apiCallUpdateReportStatus } from "../utils/api";
 
+const Container = styled.div`
+  max-height: 350px;
+  overflow-y: auto;
+`;
+
 const Table = styled.table`
   width: auto;
   border-collapse: collapse;
@@ -35,9 +40,26 @@ const RejectButton = styled(Button)`
   background-color: #f28b82;
 `;
 
+const ToggleButton = styled(Button)`
+  margin-bottom: 15px;
+  background-color: #4a90e2;
+  color: white;
+`;
+
 function ReportTable({ managedUsers, setUser }) {
   const [displayOnlyPendingReports, setDisplayOnlyPendingReports] =
     useState(true);
+
+  // Store all reports and dynamically filter for display
+  const [allReports, setAllReports] = useState(
+    managedUsers.flatMap((user) =>
+      user.reports.map((report) => ({
+        ...report,
+        userName: `${user.firstName} ${user.lastName}`,
+      }))
+    )
+  );
+
   const formatTime = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -58,31 +80,51 @@ function ReportTable({ managedUsers, setUser }) {
         updatedReports[reportIndex] = report;
         return { ...user, reports: updatedReports };
       });
+
+      setAllReports((reports) =>
+        reports.map((r) =>
+          r.id === report.id ? { ...report, userName: r.userName } : r
+        )
+      );
+
       alert(`Set new status ${status} done successfully`);
     }
   };
 
+  const toggleDisplayMode = () => {
+    setDisplayOnlyPendingReports((prev) => !prev);
+  };
+
   return (
-    <Table>
-      <thead>
-        <tr>
-          <Th>Name</Th>
-          <Th>Date</Th>
-          <Th>Start Time</Th>
-          <Th>End Time</Th>
-          <Th></Th>
-        </tr>
-      </thead>
-      <tbody>
-        {managedUsers.map((user) =>
-          user.reports.map((report) => {
-            if (displayOnlyPendingReports && report.status === "Pending") {
-              return (
-                <tr key={report.id}>
-                  <Td>{`${user.firstName} ${user.lastName}`}</Td>
-                  <Td>{formatDate(report.startTime)}</Td>
-                  <Td>{formatTime(report.startTime)}</Td>
-                  <Td>{formatTime(report.endTime)}</Td>
+    <Container>
+      <ToggleButton onClick={toggleDisplayMode}>
+        {displayOnlyPendingReports
+          ? "Show All Reports"
+          : "Show Pending Reports"}
+      </ToggleButton>
+      <Table>
+        <thead>
+          <tr>
+            <Th>Name</Th>
+            <Th>Date</Th>
+            <Th>Start Time</Th>
+            <Th>End Time</Th>
+            <Th></Th>
+          </tr>
+        </thead>
+        <tbody>
+          {allReports
+            .filter(
+              (report) =>
+                !displayOnlyPendingReports || report.status === "Pending"
+            )
+            .map((report) => (
+              <tr key={report.id}>
+                <Td>{report.userName}</Td>
+                <Td>{formatDate(report.startTime)}</Td>
+                <Td>{formatTime(report.startTime)}</Td>
+                <Td>{formatTime(report.endTime)}</Td>
+                {report.status === "Pending" ? (
                   <ButtonsTd>
                     <ApproveButton
                       onClick={() => updateReportStatus(report.id, "Approved")}
@@ -95,13 +137,14 @@ function ReportTable({ managedUsers, setUser }) {
                       Reject
                     </RejectButton>
                   </ButtonsTd>
-                </tr>
-              );
-            } else return <></>;
-          })
-        )}
-      </tbody>
-    </Table>
+                ) : (
+                  <>{report.status}</>
+                )}
+              </tr>
+            ))}
+        </tbody>
+      </Table>
+    </Container>
   );
 }
 
