@@ -3,7 +3,7 @@ import { IsInt } from 'class-validator';
 
 export class ClockOutDto {
   @Transform(({ value }) => Number(value))
-  endTime: number;
+  time: number;
 
   @IsInt()
   @Transform(({ value }) => Number(value))

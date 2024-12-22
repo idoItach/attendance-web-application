@@ -39,7 +39,7 @@ export class ReportsService {
         `There is a report in progress for user with ID ${clockInDto.userId}. Please first clock-out`,
       );
     }
-    const dateObject = new Date(clockInDto.startTime);
+    const dateObject = new Date(clockInDto.time);
     const date = dateObject.toISOString().split('T')[0];
 
     const report = this.reportsRepository.create({
@@ -64,7 +64,7 @@ export class ReportsService {
         `Can't find a report in progress for user with ID ${clockOutDto.userId}. Please first clock-in`,
       );
     }
-    const dateObject = new Date(clockOutDto.endTime);
+    const dateObject = new Date(clockOutDto.time);
     return this.reportsRepository.save({
       ...report,
       endTime: dateObject,

@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/User.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/createUser.dto';
-import { plainToClass } from 'class-transformer';
+import { UserRoles } from 'src/commons/enums';
 
 @Injectable()
 export class UsersService {
@@ -16,6 +16,10 @@ export class UsersService {
     return this.userRepository.find();
   }
 
+  findAllManagers(): Promise<User[]> {
+    return this.userRepository.find({ where: { role: UserRoles.Manager } });
+  }
+
   findOne(userId: number): Promise<User> {
     return this.userRepository.findOne({
       where: { id: userId },
@@ -23,11 +27,15 @@ export class UsersService {
     });
   }
 
-  findOneByEmail(email: string): Promise<User> {
-    return this.userRepository.findOne({
+  async findOneByEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findOne({
       where: { email },
-      relations: ['manager', 'managedUsers', 'managedUsers.reports'],
+      relations: ['manager', 'reports', 'managedUsers', 'managedUsers.reports'],
     });
+    if (!user) {
+      throw new NotFoundException(`Employee with email ${email} not found`);
+    }
+    return user;
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
