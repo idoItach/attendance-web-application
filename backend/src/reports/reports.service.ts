@@ -28,7 +28,6 @@ export class ReportsService {
   }
 
   async createClockIn(clockInDto: ClockInDto): Promise<Report> {
-    console.log(clockInDto);
     const user = await this.usersService.findOne(clockInDto.userId);
     if (!user) {
       throw new NotFoundException(

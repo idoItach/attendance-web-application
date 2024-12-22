@@ -83,6 +83,7 @@ function SignUpUserForm({ onClose }) {
     const user = await apiCallSignUpUser(body);
     if (user) {
       alert("User signed up successfully");
+      onClose();
     }
   };
 
